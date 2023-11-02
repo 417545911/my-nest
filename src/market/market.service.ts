@@ -5,7 +5,11 @@ import { UpdateMarketDto } from './dto/update-market.dto';
 @Injectable()
 export class MarketService {
   create(createMarketDto: CreateMarketDto) {
-    return 'This action adds a new market';
+    // return 'This action adds a new market';
+    return {
+      msg:"创建成功",
+      body:createMarketDto
+    }
   }
 
   findAll() {
