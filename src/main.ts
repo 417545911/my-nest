@@ -5,13 +5,13 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const appOptions = {cors:true};
   const app = await NestFactory.create(AppModule,appOptions);
-  app.setGlobalPrefix("api");
+  app.setGlobalPrefix("mock");
 
   const options = new DocumentBuilder()
       .setTitle("Nest API 模拟")
       .setDescription("前端模拟接口")
       .setVersion("1.0")
-      .setBasePath("api")
+      .setBasePath("mock")
       .addBearerAuth()
       .build();
   const document = SwaggerModule.createDocument(app,options);
