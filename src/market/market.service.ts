@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { CreateDataDto } from './dto/create-data.dto';
 // import dayjs from 'dayjs';
 const dayjs = require('dayjs');
 
@@ -8,16 +9,26 @@ export class MarketService {
     return '235';
   }
   getMock1() {
-    const _date = Array.from({ length: 5 }, (_, i) =>
-      dayjs().subtract(4-i, 'day').format('YYYY-MM-DD'),
-    );
-    let secondValue = 0; // 涨跌初始值
-    const ret = _date.map((el) => generateTimeArray(el,secondValue));
+    // const _date = Array.from({ length: 5 }, (_, i) =>
+    //   dayjs().subtract(4-i, 'day').format('YYYY-MM-DD'),
+    // );
+    const _date = [];
+    const ret = _date.map((el) => generateTimeArray(el));
+    return ret.flat();
+  }
+  queryMock1(data: CreateDataDto): object[] {
+    const { date} = data;
+    const _date = JSON.parse(JSON.parse(JSON.stringify(date)))
+    const ret = _date.map((el) => generateTimeArray(el));
     return ret.flat();
   }
 }
 
-function generateTimeArray(date, secondValue,startTime = '09:00', endTime = '17:30') {
+function generateTimeArray(
+  date: string,
+  startTime = '09:00',
+  endTime = '17:30',
+) {
   date = dayjs(date).format('YYYY-MM-DD');
   const timeArray = [];
   const startHour = parseInt(startTime.split(':')[0]);
@@ -37,14 +48,11 @@ function generateTimeArray(date, secondValue,startTime = '09:00', endTime = '17:
     for (let minute = minuteStart; minute <= minuteEnd; minute++) {
       const formattedHour = hour.toString().padStart(2, '0');
       const formattedMinute = minute.toString().padStart(2, '0');
-      const randomVal = Math.random() * 0.2 - 0.1
-      const _secondValue = secondValue - randomVal;
-      secondValue = Math.abs(_secondValue) > 4.4 ? secondValue : _secondValue;
+      const randomVal = (Math.random() * 2 + 2).toFixed(4);
 
       timeArray.push([
         `${date} ${formattedHour}:${formattedMinute}`,
-        +secondValue.toFixed(2),
-        null,
+        +randomVal,
       ]);
     }
   }
